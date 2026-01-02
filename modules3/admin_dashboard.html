@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <style>
+    body { background: #141717; color: white; font-family: Arial; padding: 20px; }
+    h2 { text-align: center; }
+    .section { margin: 30px 0; }
+    button { padding: 8px 12px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Admin Dashboard</h2>
+  <div class="section">
+    <h3>Manage Courses</h3>
+    <button onclick="loadCourses()">View All Courses</button>
+    <ul id="course-list"></ul>
+  </div>
+  <div class="section">
+    <h3>Manage Users</h3>
+    <button onclick="loadUsers()">View All Users</button>
+    <ul id="user-list"></ul>
+  </div>
+
+  <script>
+    async function loadCourses() {
+      const res = await fetch('/api/courses');
+      const courses = await res.json();
+      const list = document.getElementById('course-list');
+      list.innerHTML = '';
+      courses.forEach(c => {
+        const li = document.createElement('li');
+        li.textContent = `${c.name} - ${c.instructor}`;
+        list.appendChild(li);
+      });
+    }
+
+    async function loadUsers() {
+      const res = await fetch('/api/users');
+      const users = await res.json();
+      const list = document.getElementById('user-list');
+      list.innerHTML = '';
+      users.forEach(u => {
+        const li = document.createElement('li');
+        li.textContent = `${u.username} (${u.email})`;
+        list.appendChild(li);
+      });
+    }
+  </script>
+  <button onclick="logout()">Logout</button>
+
+    <script>
+    async function logout() {
+        const res = await fetch('/api/logout', { method: 'POST' });
+        const data = await res.json();
+        alert(data.message);
+        window.location.href = 'login.html';
+    }
+    </script>
+</body>
+</html>
