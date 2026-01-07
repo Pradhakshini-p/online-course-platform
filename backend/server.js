@@ -3,16 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
-import errorHandler from './middleware/errorHandler.js';
-import notFound from './middleware/notFound.js';
-import authRoutes from './routes/auth.js';
-import courseRoutes from './routes/courses.js';
-import lessonRoutes from './routes/lessons.js';
-import enrollmentRoutes from './routes/enrollments.js';
-import progressRoutes from './routes/progress.js';
-import reviewRoutes from './routes/reviews.js';
-import analyticsRoutes from './routes/analytics.js';
-import profileRoutes from './routes/profile.js';
 
 // Load environment variables
 dotenv.config();
@@ -32,7 +22,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Request logging middleware (for development)
+// Request logging middleware
 if (process.env.NODE_ENV === 'development') {
   app.use((req, res, next) => {
     console.log(`${req.method} ${req.path}`);
@@ -44,40 +34,35 @@ if (process.env.NODE_ENV === 'development') {
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'Server is running',
-    timestamp: new Date().toISOString()
+    message: 'Server is running'
   });
 });
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/courses', courseRoutes);
-app.use('/api/lessons', lessonRoutes);
-app.use('/api/enrollments', enrollmentRoutes);
-app.use('/api/progress', progressRoutes);
-app.use('/api/reviews', reviewRoutes);
-app.use('/api/analytics', analyticsRoutes);
-app.use('/api/profile', profileRoutes);
+// Test endpoint
+app.get('/api/test', (req, res) => {
+  res.json({ success: true, message: 'API working' });
+});
 
 // 404 handler
-app.use(notFound);
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: 'Route not found' });
+});
 
-// Error handler (must be last)
-app.use(errorHandler);
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  res.status(500).json({ success: false, message: 'Server error' });
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
-
-const server = app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\nServer running on port ${PORT}\n`);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Promise Rejection:', err);
-  server.close(() => {
-    process.exit(1);
-  });
+  console.error('Error:', err);
+  server.close(() => process.exit(1));
 });
 
 export default app;
