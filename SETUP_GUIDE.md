@@ -56,7 +56,7 @@ EOF
 
 **For MongoDB Atlas (Cloud):**
 ```env
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/online_course_platform
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/online_course_platform
 ```
 
 ### 2.3 Test MongoDB Connection
