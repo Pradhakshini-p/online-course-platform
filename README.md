@@ -167,6 +167,16 @@ Frontend will run on `http://localhost:3000`
 - **Reviews** - Course reviews and ratings
 
 ---
+## 🖼️ Screenshot
+
+### 🌐 Platform Overview
+![Online Course Platform Screenshot](https://raw.githubusercontent.com/Pradhakshini-p/online-course-platform/main/website.img.png)
+
+## 🖼️ Course Screenshot
+
+### 📘 Course Page View
+![Course Screenshot](https://raw.githubusercontent.com/Pradhakshini-p/online-course-platform/main/course%2Cimg.png)
+
 
 ## 🚀 Deployment
 
@@ -244,3 +254,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 **Last Updated:** January 2026  
 **Project Status:** ✅ Production Ready for Demonstration
+
